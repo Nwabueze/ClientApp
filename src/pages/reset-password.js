@@ -32,9 +32,9 @@ function ResetPassword({...props}){
         const res = await axios.put(`/update/fields/password/${password}/${email}`);
         if(res.data.status){
             setInitial(false);
-            enqueueSnackbar("Password reset link has been sent to your email address", {variant: "success"});
+            enqueueSnackbar("Password reset was successful", {variant: "success"});
         }else{
-            enqueueSnackbar("We are having trouble sending you email", {variant: "error"});
+            enqueueSnackbar("Sorry, we couldn't reset password", {variant: "error"});
         }
     }
 
@@ -84,7 +84,7 @@ function ResetPassword({...props}){
                 helperText={
                 errors.password2 ? 
                 (
-                  errors.password.type === 'minLength' ? 
+                  errors.password2.type === 'minLength' ? 
                   'Expecting at least 6 characters' : 'Empty password'
                 ) : ''
                 }

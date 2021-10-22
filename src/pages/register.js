@@ -63,10 +63,13 @@ export default function Register({...props}){
           setOpen(false);
           enqueueSnackbar("Your phone has been verified", {variant: 'success'});
           props.history.push('/dashboard/profile');
+        }else{
+          setInitial(true);
+          setDisplay(true);
         }
-        
       }catch(err){
-        setInitial(false);
+        setInitial(true);
+        setDisplay(true);
         enqueueSnackbar(err.message, {variant: 'error'});
       }
     }
@@ -274,7 +277,7 @@ export default function Register({...props}){
           </List>
         </form>
         <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Forgot password?</DialogTitle>
+        <DialogTitle>Phone verification</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter the four digit code (OTP) sent to {phoneNumber}

@@ -50,6 +50,7 @@ export default function Login({...props}){
 
     const handleClose = () => {
         setOpen(false);
+        setDisplay(true);
     };
 
     const forgotPassword = async () => {
@@ -64,6 +65,9 @@ export default function Login({...props}){
             setInitial(false);
             setOpen(false);
             enqueueSnackbar("A password reset link has been sent to your email address", {variant: 'success'});
+        }else{
+            setDisplay(true);
+            enqueueSnackbar("Reset link could not be sent", {variant: 'success'});
         }
     }
 
@@ -78,16 +82,17 @@ export default function Login({...props}){
         try {
             const {data} = await axios.get(`/login/${email}/${password}`);
             setLoading(false);
-            if(data._doc.email){
+            if(data.hasOwnProperty("_doc") || data.hasOwnProperty("email")){
                 enqueueSnackbar("Login was successful", {variant: "success"});
                 Cookies.set("user", JSON.stringify(data._doc));
                 props.history.push('/dashboard/profile');
+            }else{
+                if(data.hasOwnProperty("reason")){
+                    enqueueSnackbar(data.reason, {variant: "error"});
+                }
             }
-            //Cookies.set("user", JSON.stringify(data));
-            
-            //props.history.push('/dashboard/profile');
         } catch(err) {
-            enqueueSnackbar(err.response.data ? err.response.data.message : err.message, { variant: 'error' });
+            enqueueSnackbar(err.message, { variant: 'error' });
         }
     }
 
